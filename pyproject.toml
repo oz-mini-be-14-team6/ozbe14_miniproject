@@ -1,0 +1,50 @@
+[project]
+name = "fastapiminiproject"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "asyncpg>=0.30.0",
+    "fastapi>=0.120.0",
+    "tortoise-orm>=0.25.1",
+    "uvicorn>=0.38.0",
+]
+
+[dependency-groups]
+dev = [
+    "aerich>=0.9.2",
+    "python-dotenv>=1.1.1",
+    "ruff>=0.14.2",
+]
+prod = [
+    "asyncpg>=0.30.0",
+    "fastapi>=0.120.0",
+    "tortoise-orm>=0.25.1",
+    "uvicorn>=0.38.0",
+]
+
+[tool.ruff]
+line-length = 100
+# target-version = ["py311"] (313? 필요없나?)
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]
+exclude = ["migration", "alembic"]
+
+[tool.aerich]
+tortoise_orm = "database.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
+
+[tool.black]
+line-length = 100
+# target-version = ["py311"] (313? 필요없나?)
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E203"]
+exclude = ["migration", "alembic"]
