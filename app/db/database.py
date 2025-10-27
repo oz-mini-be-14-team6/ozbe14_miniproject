@@ -1,6 +1,7 @@
 import os
-from tortoise import Tortoise
+
 from dotenv import load_dotenv
+from tortoise import Tortoise
 
 load_dotenv()
 
@@ -15,6 +16,7 @@ TORTOISE_ORM = {
         }
     },
 }
+
 
 async def init_db():
     await Tortoise.init(config=TORTOISE_ORM)
