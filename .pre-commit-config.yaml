@@ -1,0 +1,47 @@
+# .pre-commit-config.yaml
+repos:
+  # 1) pre-commit 자체 유틸 (기본 위생)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+        files: \.ya?ml$
+
+  # 2) autoflake: 미사용 import/변수 정리(자동 수정)
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.3.1
+    hooks:
+      - id: autoflake
+        args:
+          - --in-place
+          - --remove-all-unused-imports
+          - --remove-unused-variables
+          - --ignore-init-module-imports
+        files: \.py$
+
+  # 3) isort: import 정렬(자동 수정)
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ["--profile=black"]
+        files: \.py$
+
+  # 4) black: 포매터(자동 수정)
+  - repo: https://github.com/psf/black
+    rev: 24.8.0
+    hooks:
+      - id: black
+        language_version: python3
+        files: \.py$
+
+  # 5) ruff: 초고속 린터 & 일부 자동 수정
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.2
+    hooks:
+      - id: ruff
+        args: ["--fix"]   # 가능한 것은 자동 수정
+        files: \.py$
