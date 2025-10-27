@@ -26,10 +26,25 @@ prod = [
 
 [tool.ruff]
 line-length = 100
-select = ["E", "F", "I"]
+# target-version = ["py311"] (313? 필요없나?)
+select = ["E", "F", "I", "B"]
 ignore = ["E501"]
+exclude = ["migration", "alembic"]
 
 [tool.aerich]
 tortoise_orm = "database.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./."
+
+[tool.black]
+line-length = 100
+# target-version = ["py311"] (313? 필요없나?)
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E203"]
+exclude = ["migration", "alembic"]
