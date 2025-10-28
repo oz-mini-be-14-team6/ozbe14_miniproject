@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 from tortoise.transactions import in_transaction
 
 from app.models.models import User
-from app.schemas.schemas import UserCreate
+from app.schemas.user import UserCreate
 
 # 환견변수 읽기
 load_dotenv()
