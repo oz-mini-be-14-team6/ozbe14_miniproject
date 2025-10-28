@@ -11,7 +11,7 @@ TORTOISE_ORM = {
     "connections": {"default": DB_URL},
     "apps": {
         "models": {
-            "models": ["models", "aerich.models"],  # aerich.models 포함
+            "models": ["app.models.models", "aerich.models"],  # aerich.models 포함
             "default_connection": "default",
         }
     },
@@ -20,4 +20,3 @@ TORTOISE_ORM = {
 
 async def init_db():
     await Tortoise.init(config=TORTOISE_ORM)
-    await Tortoise.generate_schemas()  # 초기 개발용 (Aerich 적용 시 삭제 가능)
