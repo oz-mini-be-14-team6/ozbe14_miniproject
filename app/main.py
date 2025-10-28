@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 
+from app.api import auth
 from app.db.database import TORTOISE_ORM
 
 app = FastAPI()
@@ -16,3 +17,6 @@ register_tortoise(
 @app.get("/")
 async def root():
     return {"message": "FastAPI + PostgreSQL + TortoiseORM OK"}
+
+
+app.include_router(auth.router, prefix="/auth", tags=["Auth"])
