@@ -1,13 +1,23 @@
 import asyncio
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from tortoise.contrib.fastapi import register_tortoise
 
-from app.api import auth
-from app.api.auth import cleanup_blacklist
+from app.api.v1 import auth, diary
 from app.db.database import TORTOISE_ORM, init_db
+from app.services.auth_service import cleanup_blacklist
 
-app = FastAPI()
+app = FastAPI(title="FastAPI Mini Project")
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+templates = Jinja2Templates(directory="app/templates")
+
+app.include_router(auth.router, prefix="/auth", tags=["Auth"])
+app.include_router(diary.router, prefix="/diary", tags=["Diary"])
 
 register_tortoise(
     app,
@@ -15,14 +25,6 @@ register_tortoise(
     generate_schemas=False,  # 마이그레이션 사용 시 False
     add_exception_handlers=True,
 )
-
-
-@app.get("/")
-async def root():
-    return {"message": "FastAPI + PostgreSQL + TortoiseORM OK"}
-
-
-app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 
 
 @app.on_event("startup")
@@ -36,3 +38,8 @@ async def startup_event():
             await asyncio.sleep(3600)  # 1시간마다 실행
 
     asyncio.create_task(periodic_cleanup())
+
+
+@app.get("/", response_class=HTMLResponse)
+async def main_page(request: Request):
+    return templates.TemplateResponse("main.html", {"request": request})

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>내 다이어리 홈</title>
+  <style>
+    body {
+      font-family: "Noto Sans KR", sans-serif;
+      margin: 0;
+      background-color: #f4f9ff;
+    }
+
+    header {
+      background-color: #56b4ef;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .user-info {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button {
+      background-color: white;
+      color: #0077cc;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #e3f5ff;
+    }
+
+    main {
+      text-align: center;
+      margin-top: 100px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📖 내 다이어리</h1>
+    <div class="user-info">
+      <span id="username">로딩 중...</span>
+      <button id="logout-btn">로그아웃</button>
+    </div>
+  </header>
+
+  <main>
+    <h2>환영합니다!</h2>
+    <p>이 페이지는 로그인한 사용자만 볼 수 있습니다 😊</p>
+  </main>
+
+  <script>
+    // 페이지 로드 시 사용자 정보 확인
+    document.addEventListener("DOMContentLoaded", async () => {
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        window.location.href = "/auth/";
+        return;
+      }
+
+      const res = await fetch("/auth/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!res.ok) {
+        alert("세션이 만료되었습니다. 다시 로그인하세요.");
+        localStorage.removeItem("access_token");
+        window.location.href = "/auth/";
+        return;
+      }
+
+      const user = await res.json();
+      document.getElementById("username").textContent = user.username;
+    });
+
+    // 로그아웃 버튼 클릭 시
+    document.getElementById("logout-btn").addEventListener("click", async () => {
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        await fetch("/auth/logout", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      }
+      localStorage.removeItem("access_token");
+      alert("로그아웃 되었습니다!");
+      window.location.href = "/auth/";
+    });
+  </script>
+</body>
+</html>
