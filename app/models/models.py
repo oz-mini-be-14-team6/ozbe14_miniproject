@@ -43,3 +43,12 @@ class Bookmarks(models.Model):
 
     class Meta:
         table = "bookmarks"
+
+
+class BlacklistedToken(models.Model):
+    id = fields.IntField(pk=True)
+    token = fields.TextField(unique=True)  # JWT 문자열
+    blacklisted_at = fields.DatetimeField(auto_now_add=True)  # 블랙리스트 등록 시각
+
+    def __str__(self):
+        return f"BlacklistedToken(id={self.id}, token={self.token[:15]}...)"

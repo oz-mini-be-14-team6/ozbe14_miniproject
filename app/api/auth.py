@@ -8,7 +8,7 @@ from jose import ExpiredSignatureError, JWTError, jwt
 from passlib.context import CryptContext
 from tortoise.transactions import in_transaction
 
-from app.models.models import User
+from app.models.models import BlacklistedToken, User
 from app.schemas.user import UserCreate
 
 # 환견변수 읽기
@@ -62,7 +62,13 @@ def create_access_token(data: dict | None = None) -> str:
 
 # 현재 사용자 의존성 (토큰 검증)
 async def get_current_user(token: str = Depends(oauth2_scheme)):
+
     try:
+        # 블랙리스트 먼저 확인
+        blacklisted = await BlacklistedToken.get_or_none(token=token)
+        if blacklisted:
+            raise HTTPException(status_code=401, detail="Token has been revoked")
+
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str | None = payload.get("sub")
 
@@ -109,7 +115,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 # 회원가입 엔드포인트
 @router.post("/register")
 async def register_user(user: UserCreate):
-    # 유저가 보낸 id,pw 스키마를 받습니다 예시) { "username": "alice", "password": "S3cure!pwd" }
+    # 유저가 보낸 id,pw 스키마를 받습니다
     async with (
         in_transaction()
     ):  # 하나의 트랜잭션으로 아래 DB 작업을 묶습니다 중간에 예외가 나면 롤백, 모두 성공하면 커밋됩니다.
@@ -146,5 +152,24 @@ async def read_current_user(current_user: User = Depends(get_current_user)):  # 
 
 
 @router.post("/logout")
-async def logout():
-    return {"message": "클라이언트에서 토큰 삭제로 로그아웃 처리"}
+async def logout(
+    current_user: User = Depends(get_current_user), token: str = Depends(oauth2_scheme)
+):
+    await blacklist_token(token)
+    return {"message": f"User '{current_user.username}' logged out successfully"}
+
+
+async def cleanup_blacklist():  # 기간 만료된 토큰 블랙리스트에서 제거
+    expire_time = datetime.now(timezone.utc) - timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    await BlacklistedToken.filter(blacklisted_at__lt=expire_time).delete()
+
+
+async def blacklist_token(token: str):
+    # 토큰을 블랙리스트에 추가
+    exists = await BlacklistedToken.get_or_none(token=token)
+
+    if not exists:
+        await BlacklistedToken.create(token=token)
+
+
+# ruff: noqa: B008
