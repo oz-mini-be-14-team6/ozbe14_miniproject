@@ -12,10 +12,9 @@ from app.services.auth_service import cleanup_blacklist
 
 app = FastAPI(title="FastAPI Mini Project")
 
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
-
 templates = Jinja2Templates(directory="app/templates")
 
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(diary.router, prefix="/diary", tags=["Diary"])
 
