@@ -35,6 +35,7 @@ class DatabaseManager:
             "port": port,
             "sslmode": sslmode,  # AWS RDS: SSL 필수
             "connect_timeout": 10,  # 연결 타임아웃 설정
+            "client_encoding": "utf-8",
         }
         self.conn = None
         self.cursor = None
@@ -97,7 +98,7 @@ class DatabaseManager:
         try:
             insert_query = """
                            INSERT INTO quotes (quote, author)
-                           VALUES (%s, %s) ON CONFLICT (question) DO NOTHING
+                           VALUES (%s, %s) ON CONFLICT DO NOTHING
                            """
 
             data = [(item["quote"], item["author"]) for item in quotes_list]
@@ -116,7 +117,7 @@ class DatabaseManager:
         try:
             insert_query = """
                            INSERT INTO reflection_questions (question)
-                           VALUES (%s) ON CONFLICT (question) DO NOTHING
+                           VALUES (%s) ON CONFLICT DO NOTHING
                            """
 
             data = [(question,) for question in questions_list]
@@ -165,9 +166,9 @@ def get_db_config():
     else:
         # 개발 환경 (로컬)
         return {
-            "dbname": os.getenv("DB_NAME", "mydb"),
+            "dbname": os.getenv("DB_NAME", "diary"),
             "user": os.getenv("DB_USER", "postgres"),
-            "password": os.getenv("DB_PASSWORD", "password"),
+            "password": os.getenv("DB_PASSWORD", "alerpT@j0y"),
             "host": os.getenv("DB_HOST", "localhost"),
             "port": int(os.getenv("DB_PORT", 5432)),
             "sslmode": "prefer",

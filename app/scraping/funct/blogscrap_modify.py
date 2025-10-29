@@ -14,6 +14,10 @@ class QuoteScraper:
         """
         self.option_ = Options()
         self.option_.add_experimental_option("detach", False)
+
+        # UTF-8 인코딩;
+        self.option_.add_argument("--lang=ko-KR")
+
         self.driver = webdriver.Chrome(options=self.option_)
         randtime = randint(1, 3)
         time.sleep(randtime)
@@ -67,6 +71,10 @@ class SelfReflectScraper:
         """
         self.option_ = Options()
         self.option_.add_experimental_option("detach", False)
+
+        # 동일: utf-8 인코딩
+        self.option_.add_argument("--lang=ko-KR")
+
         self.driver = webdriver.Chrome(options=self.option_)
         randtime = randint(1, 3)
         time.sleep(randtime)
