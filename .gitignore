@@ -1,4 +1,8 @@
 .venv
 venv
-.envtouch.env
 .env
+__pycache__/
+app/__pycache__/
+app/db/__pycache__/
+app/schemas/__pycache__/
+
