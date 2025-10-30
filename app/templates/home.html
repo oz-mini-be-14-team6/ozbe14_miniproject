@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>홈</title>
-  <link rel="stylesheet" href="/static/home.css" />
+  <link rel="stylesheet" href="/static/css/home.css" />
 </head>
 <body>
   <header>
-    <h1>📘 나의 다이어리 홈</h1>
+    <h1>📘 나의 다이어리</h1>
     <div>
       <span class="username" id="username">로딩 중...</span>
       <button class="logout" id="logout-btn">로그아웃</button>
@@ -16,11 +16,31 @@
   </header>
 
   <main>
-    <h2>환영합니다!</h2>
-    <p>이곳에서 오늘의 일기를 기록해보세요.</p>
+    <section class="write-section">
+      <h2> 일기 작성</h2>
+      <form id="diary-form">
+        <div class="form-group">
+          <label for="title">제목</label>
+          <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required />
+        </div>
+
+        <div class="form-group">
+          <label for="content">내용</label>
+          <textarea id="content" name="content" placeholder="오늘의 생각을 기록해보세요..." required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">저장하기</button>
+      </form>
+    </section>
+
+    <section class="list-section">
+      <h2> 작성 목록</h2>
+      <ul id="diary-list"></ul>
+      <div id="pagination" class="pagination"></div>
+    </section>
   </main>
 
   <!-- 분리된 JS 파일 로드 -->
-  <script src="/static/home.js"></script>
+  <script src="/static/js/home.js"></script>
 </body>
 </html>
