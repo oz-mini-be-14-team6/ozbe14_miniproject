@@ -118,6 +118,46 @@ async function loadDiaries(page = 1) {
 // 페이지 로드 시 첫 페이지 불러오기
 document.addEventListener("DOMContentLoaded", () => loadDiaries(1));
 
+// ✨ 오늘의 명언 불러오기
+async function loadQuote() {
+  try {
+    const res = await fetch("/quote/random"); // 예시 엔드포인트
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById("quote-text").textContent = `"${data.quote}"`;
+      document.getElementById("quote-author").textContent = `- ${data.author} -`;
+    } else {
+      document.getElementById("quote-text").textContent = "명언을 불러올 수 없습니다.";
+    }
+  } catch (err) {
+    console.error(err);
+    document.getElementById("quote-text").textContent = "명언을 불러올 수 없습니다.";
+  }
+}
 
-// 초기 로드
-loadUser();
+async function loadQuestion() {
+  try {
+    const res = await fetch("/quote/question");
+    if (res.ok) {
+      const data = await res.json();
+      const textarea = document.getElementById("content");
+      if (data && data.question) {
+        textarea.placeholder = data.question; // ✅ placeholder 변경
+      } else {
+        textarea.placeholder = "오늘의 생각을 기록해보세요...";
+      }
+    } else {
+      console.error("질문 불러오기 실패");
+    }
+  } catch (err) {
+    console.error("에러:", err);
+  }
+}
+
+// ✅ 페이지 로드시 명언도 함께 불러오기
+document.addEventListener("DOMContentLoaded", () => {
+  loadQuote();
+  loadDiaries(1);
+  loadUser();
+  loadQuestion();
+});

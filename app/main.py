@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from tortoise.contrib.fastapi import register_tortoise
 
-from app.api.v1 import auth, diary
+from app.api.v1 import auth, diary, quote
 from app.db.database import TORTOISE_ORM, init_db
 from app.services.auth_service import cleanup_blacklist
 
@@ -17,6 +17,7 @@ templates = Jinja2Templates(directory="app/templates")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(diary.router, prefix="/diary", tags=["Diary"])
+app.include_router(quote.router, prefix="/quote", tags=["Quote"])
 
 register_tortoise(
     app,

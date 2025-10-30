@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>홈</title>
+  <title>📘 나의 다이어리</title>
   <link rel="stylesheet" href="/static/css/home.css" />
 </head>
 <body>
@@ -15,32 +15,40 @@
     </div>
   </header>
 
-  <main>
-    <section class="write-section">
-      <h2> 일기 작성</h2>
-      <form id="diary-form">
-        <div class="form-group">
-          <label for="title">제목</label>
-          <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required />
-        </div>
+  <main class="main-layout">
+    <!-- 왼쪽 영역 -->
+    <section class="left">
+      <div id="quote-box">
+        <p id="quote-text">"오늘의 명언을 불러오는 중..."</p>
+        <p id="quote-author"></p>
+      </div>
 
-        <div class="form-group">
-          <label for="content">내용</label>
-          <textarea id="content" name="content" placeholder="오늘의 생각을 기록해보세요..." required></textarea>
-        </div>
+      <div id="diary-form">
+        <h2>✍️ 일기 작성</h2>
+        <form id="create-diary-form">
+          <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required />
+          </div>
 
-        <button type="submit" class="submit-btn">저장하기</button>
-      </form>
+          <div class="form-group">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" placeholder="오늘의 생각을 기록해보세요..." required></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">저장하기</button>
+        </form>
+      </div>
     </section>
 
-    <section class="list-section">
-      <h2> 작성 목록</h2>
+    <!-- 오른쪽 영역 -->
+    <section class="right">
+      <h2>📖 작성 목록</h2>
       <ul id="diary-list"></ul>
       <div id="pagination" class="pagination"></div>
     </section>
   </main>
 
-  <!-- 분리된 JS 파일 로드 -->
   <script src="/static/js/home.js"></script>
 </body>
 </html>

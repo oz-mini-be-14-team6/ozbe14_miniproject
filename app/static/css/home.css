@@ -4,7 +4,6 @@ body {
   background-color: #f4f9ff;
 }
 
-/* 상단 헤더 */
 header {
   background-color: #56b4ef;
   color: white;
@@ -19,14 +18,12 @@ header h1 {
   font-size: 20px;
 }
 
-.user-info {
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.username {
+  font-weight: bold;
+  margin-right: 10px;
 }
 
-button {
+.logout {
   background-color: white;
   color: #0077cc;
   border: none;
@@ -36,99 +33,93 @@ button {
   font-weight: bold;
 }
 
-button:hover {
+.logout:hover {
   background-color: #e3f5ff;
 }
 
-/* 메인 콘텐츠 전체 */
-main {
-  max-width: 1000px;
-  margin: 60px auto;
-  padding: 0 20px;
+/* 🔹 레이아웃 구조 */
+.main-layout {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  gap: 25px;
+  padding: 40px 60px;
+}
+
+/* 왼쪽 영역 */
+.left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   gap: 30px;
 }
 
-/* 작성 폼 & 목록 공통 */
-section {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  padding: 25px 30px;
-}
-
-/* 글쓰기 영역 (왼쪽) */
-.write-section {
+/* 오른쪽 영역 */
+.right {
   flex: 1;
-  min-width: 45%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.write-section h2 {
-  color: #0077cc;
+/* 명언 */
+#quote-box {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+#quote-text {
   font-size: 18px;
-  margin-bottom: 20px;
-  border-left: 4px solid #56b4ef;
-  padding-left: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
+#quote-author {
+  color: #666;
+  font-style: italic;
+}
+
+/* 일기 작성 폼 */
 #diary-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-#diary-form label {
-  font-weight: 600;
-  margin-bottom: 5px;
+.form-group {
+  margin-bottom: 15px;
 }
 
-#diary-form input[type="text"],
+#diary-form input,
 #diary-form textarea {
   width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 6px;
   padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
   font-size: 14px;
-  font-family: "Noto Sans KR", sans-serif;
   resize: none;
 }
 
-#diary-form textarea {
-  height: 120px;
-}
-
 .submit-btn {
-  align-self: flex-end;
+  width: 100%;
   background-color: #56b4ef;
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
+  padding: 10px;
   font-weight: bold;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
 }
 
 .submit-btn:hover {
   background-color: #3d9cdb;
 }
 
-/* 일기 목록 (오른쪽) */
-.list-section {
-  flex: 1;
-  min-width: 45%;
-}
-
-.list-section h2 {
-  color: #0077cc;
-  font-size: 18px;
-  margin-bottom: 20px;
-  border-left: 4px solid #56b4ef;
-  padding-left: 10px;
-}
-
+/* 일기 목록 */
 #diary-list {
   list-style: none;
   padding: 0;
@@ -140,30 +131,22 @@ section {
   padding: 12px 0;
 }
 
-#diary-list li:last-child {
-  border-bottom: none;
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 15px;
 }
 
-#diary-list strong {
-  display: block;
-  font-size: 16px;
-  color: #0077cc;
+.pagination button {
+  background-color: #56b4ef;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
-#diary-list small {
-  color: #999;
-  font-size: 13px;
-}
-
-/* 📱 반응형: 화면이 좁으면 세로로 정렬 */
-@media (max-width: 768px) {
-  main {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .write-section,
-  .list-section {
-    min-width: 100%;
-  }
+.pagination button:hover {
+  background-color: #3d9cdb;
 }

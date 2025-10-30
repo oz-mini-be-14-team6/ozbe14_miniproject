@@ -144,32 +144,10 @@ class DatabaseManager:
 
 
 def get_db_config():
-    """환경 변수에서 DB 설정 읽기
-
-    환경에 따라 자동으로 적절한 설정 반환:
-    - 로컬 개발: localhost
-    - 배포 환경: AWS RDS 등
-    """
-    # 환경 변수 확인
-    env = os.getenv("ENVIRONMENT", "development")
-
-    if env == "production":
-        # 프로덕션 환경 (AWS RDS 등)
-        return {
-            "dbname": os.getenv("DB_NAME"),
-            "user": os.getenv("DB_USER"),
-            "password": os.getenv("DB_PASSWORD"),
-            "host": os.getenv("DB_HOST"),  # AWS RDS 엔드포인트
-            "port": int(os.getenv("DB_PORT", 5432)),
-            "sslmode": "require",  # AWS RDS는 SSL 필수
-        }
-    else:
-        # 개발 환경 (로컬)
-        return {
-            "dbname": os.getenv("DB_NAME", "diary"),
-            "user": os.getenv("DB_USER", "postgres"),
-            "password": os.getenv("DB_PASSWORD", "alerpT@j0y"),
-            "host": os.getenv("DB_HOST", "localhost"),
-            "port": int(os.getenv("DB_PORT", 5432)),
-            "sslmode": "prefer",
-        }
+    return {
+        "dbname": os.getenv("DB_NAME"),
+        "user": os.getenv("DB_USER"),
+        "password": os.getenv("DB_PASSWORD"),
+        "host": os.getenv("DB_HOST"),
+        "port": int(os.getenv("DB_PORT")),
+    }
