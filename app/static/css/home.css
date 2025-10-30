@@ -1,0 +1,158 @@
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  margin: 0;
+  background-color: #f4f9ff;
+}
+
+header {
+  background-color: #56b4ef;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.username {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.logout {
+  background-color: white;
+  color: #0077cc;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout:hover {
+  background-color: #e3f5ff;
+}
+
+/* 🔹 레이아웃 구조 */
+.main-layout {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 40px 60px;
+}
+
+/* 왼쪽 영역 */
+.left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* 오른쪽 영역 */
+.right {
+  flex: 1;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 명언 */
+#quote-box {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+#quote-text {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#quote-author {
+  color: #666;
+  font-style: italic;
+}
+
+/* 일기 작성 폼 */
+#diary-form {
+  background-color: white;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+#diary-form input,
+#diary-form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  resize: none;
+}
+
+.submit-btn {
+  width: 100%;
+  background-color: #56b4ef;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #3d9cdb;
+}
+
+/* 일기 목록 */
+#diary-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#diary-list li {
+  border-bottom: 1px solid #eee;
+  padding: 12px;
+  max-height: 150px;         /* ← 추가: 목록 최대 높이 */
+  word-wrap: break-word;     /* ← 추가: 긴 단어 자동 줄바꿈 */
+  overflow-wrap: break-word; /* ← 추가: 긴 URL 등도 자동 줄바꿈 */
+  word-break: break-word;    /* ← 추가: 단어 중간에서도 줄바꿈 */
+  white-space: normal;       /* ← 추가: 공백 처리 명시 */
+  overflow-y: auto;          /* ← 추가: 스크롤 활성화 */
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.pagination button {
+  background-color: #56b4ef;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #3d9cdb;
+}
