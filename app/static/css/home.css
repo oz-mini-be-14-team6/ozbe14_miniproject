@@ -128,7 +128,13 @@ header h1 {
 
 #diary-list li {
   border-bottom: 1px solid #eee;
-  padding: 12px 0;
+  padding: 12px;
+  max-height: 150px;         /* ← 추가: 목록 최대 높이 */
+  word-wrap: break-word;     /* ← 추가: 긴 단어 자동 줄바꿈 */
+  overflow-wrap: break-word; /* ← 추가: 긴 URL 등도 자동 줄바꿈 */
+  word-break: break-word;    /* ← 추가: 단어 중간에서도 줄바꿈 */
+  white-space: normal;       /* ← 추가: 공백 처리 명시 */
+  overflow-y: auto;          /* ← 추가: 스크롤 활성화 */
 }
 
 .pagination {
