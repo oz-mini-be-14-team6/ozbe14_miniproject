@@ -1,41 +1,56 @@
 import time
 from random import randint
-
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+import shutil
+
+
+def create_driver():
+    """
+    Ubuntu 서버 환경에서도 안정적으로 실행 가능한 Chrome 드라이버 생성 함수
+    - headless 모드로 실행
+    - sandbox / dev-shm 이슈 해결
+    - 자동 경로 탐색 (chromedriver 위치)
+    """
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # GUI 없이 실행
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--disable-software-rasterizer")
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--remote-debugging-port=9222")
+    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--lang=ko-KR")
+
+    chromedriver_path = shutil.which("chromedriver") or "/usr/local/bin/chromedriver"
+    service = Service(chromedriver_path)
+
+    try:
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        return driver
+    except Exception as e:
+        print(f"❌ Chrome 드라이버 실행 실패: {e}")
+        raise
 
 
 class QuoteScraper:
     def __init__(self, url):
-        """드라이버 초기화
-        detach = False: 크롤링 종료 후 브라우저 창을 닫음(True일 시 열어둠)
-        quote_list: 수집한 인용문을 저장
-        """
-        self.option_ = Options()
-        self.option_.add_experimental_option("detach", False)
+        """명언 스크래핑용 드라이버 초기화"""
+        print("🚀 명언 스크래핑 시작")
+        self.driver = create_driver()
 
-        # UTF-8 인코딩;
-        self.option_.add_argument("--lang=ko-KR")
-
-        self.driver = webdriver.Chrome(options=self.option_)
         randtime = randint(1, 3)
         time.sleep(randtime)
         self.driver.get(url)
-
-        # velog: React 기반. 콘텐츠 로딩 대기.
         time.sleep(3)
 
         self.quote_list = []
 
     def scrape_page(self):
-        """
-        단일 페이지의 HTML을 파싱해서 quote 추출
-        Args:
-            html(str): 페이지의 html 소스 코드
-        BeautifulSoup으로 html 파싱
-        .quote 클래스를 가진 모든 요소 선택
-        """
+        """단일 페이지에서 quote / author 추출"""
         html = self.driver.page_source
         soup = BeautifulSoup(html, "html.parser")
         items = soup.select(".quote-item")
@@ -44,55 +59,32 @@ class QuoteScraper:
             try:
                 quote_text = item.select_one("p.quote")
                 author_text = item.select_one("p.author")
-                """
-                얘네가 존재한다면 이라는 if문
-                quote, author 변수에 text로 받고(공백제거:strip)
-                딕셔너리 형태로 받기
-                """
                 if quote_text and author_text:
                     quote = quote_text.get_text(strip=True)
                     author = author_text.get_text(strip=True)
-                    self.quote_list.append(
-                        {"quote": quote, "author": author}
-                    )  # 리스트에 인용문 추가
+                    self.quote_list.append({"quote": quote, "author": author})
             except Exception as e:
                 print(f"추출 오류: {e}")
 
     def close(self):
-        # 드라이버 종료
         self.driver.quit()
 
 
 class SelfReflectScraper:
     def __init__(self, url):
-        """드라이버 초기화
-        detach = False: 크롤링 종료 후 브라우저 창을 닫음(True일 시 열어둠)
-        quote_list: 수집한 인용문을 저장
-        """
-        self.option_ = Options()
-        self.option_.add_experimental_option("detach", False)
+        """질문(자기반성) 스크래핑용 드라이버 초기화"""
+        print("🚀 자기반성 질문 스크래핑 시작")
+        self.driver = create_driver()
 
-        # 동일: utf-8 인코딩
-        self.option_.add_argument("--lang=ko-KR")
-
-        self.driver = webdriver.Chrome(options=self.option_)
         randtime = randint(1, 3)
         time.sleep(randtime)
         self.driver.get(url)
-
-        # velog: React 기반. 콘텐츠 로딩 대기.
         time.sleep(3)
 
         self.reflect_list = []
 
     def scrape_page(self):
-        """
-        단일 페이지의 HTML을 파싱해서 quote 추출
-        Args:
-            html(str): 페이지의 html 소스 코드
-        BeautifulSoup으로 html 파싱
-        .quote 클래스를 가진 모든 요소 선택
-        """
+        """단일 페이지에서 질문 추출"""
         html = self.driver.page_source
         soup = BeautifulSoup(html, "html.parser")
         items = soup.select(".question")
@@ -106,5 +98,4 @@ class SelfReflectScraper:
                 print(f"추출 오류: {e}")
 
     def close(self):
-        # 드라이버 종료
         self.driver.quit()
